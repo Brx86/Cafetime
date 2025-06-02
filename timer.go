@@ -16,20 +16,20 @@ const (
 )
 
 // 新建定时器
-func NewTimer(m *systray.MenuItem, timeout int, f func()) {
+func NewTimer(m *Menu, timeout int, f func()) {
+	SetTimerStatus(m, true)
 	timerTitleCh := make(chan int, 1)
 	ticker := time.NewTicker(time.Second)
 
 	// 关闭 channel，恢复菜单标题
-	defer m.SetTitle("启动定时器")
-	defer SetTimerStatus(false)
+	defer SetTimerStatus(m, false)
 	defer close(timerTitleCh)
 	defer ticker.Stop()
 
 	// 更新标题
 	go func() {
 		for t := range timerTitleCh {
-			m.SetTitle(`剩余 ` + SecToStr(t) + `，点击取消`)
+			m.TimerS.SetTitle(`剩余 ` + SecToStr(t) + `，点击取消`)
 		}
 	}()
 
@@ -96,12 +96,19 @@ func SecToStr(sec int) string {
 	}
 }
 
-// 设置定时器状态和托盘图标
-func SetTimerStatus(status bool) {
-	timerFlag = status
+// 设置定时器状态，托盘图标与菜单
+func SetTimerStatus(m *Menu, status bool) {
 	if status {
+		m.TimerS.Show()
+		m.Timer50.Hide()
+		m.Timer30.Hide()
+		m.Timer10.Hide()
 		systray.SetIcon(IconOn)
 	} else {
+		m.TimerS.Hide()
+		m.Timer50.Show()
+		m.Timer30.Show()
+		m.Timer10.Show()
 		systray.SetIcon(IconOff)
 	}
 }
