@@ -16,7 +16,7 @@ const (
 )
 
 // 新建定时器
-func NewTimer(m *Menu, timeout int, f func()) {
+func NewTimer(m *Menu, timeout int) {
 	SetTimerStatus(m, true)
 	timerTitleCh := make(chan int, 1)
 	ticker := time.NewTicker(time.Second)
@@ -42,7 +42,7 @@ func NewTimer(m *Menu, timeout int, f func()) {
 			return
 		}
 	}
-	f()
+	actionFunc()
 }
 
 // 从输入时间字符串计算得秒数

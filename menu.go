@@ -40,6 +40,7 @@ func OnClickMenu(m *Menu) {
 	for {
 		select {
 		case <-m.ActionLck.ClickedCh: // 超时锁屏
+			actionFunc = actions.LockScreenWindows
 			UncheckAllExcept(m.ActionLck, m.ActionRun, m.ActionWeb)
 		case <-m.ActionRun.ClickedCh: // 超时打开文件或程序
 			if filePath := actions.SelectFileWindows(); filePath != "" {
@@ -55,11 +56,11 @@ func OnClickMenu(m *Menu) {
 			SetTimerStatus(m, false)
 			stopTimerCh <- struct{}{}
 		case <-m.Timer50.ClickedCh:
-			go NewTimer(m, 50*secPm, actionFunc)
+			go NewTimer(m, 50*secPm)
 		case <-m.Timer30.ClickedCh:
-			go NewTimer(m, 30*secPm, actionFunc)
+			go NewTimer(m, 30*secPm)
 		case <-m.Timer10.ClickedCh:
-			go NewTimer(m, 10*secPm, actionFunc)
+			go NewTimer(m, 10)
 		case <-m.StartUp.ClickedCh: // 设置开机自启
 			if m.StartUp.Checked() {
 				m.StartUp.Uncheck()
