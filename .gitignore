@@ -32,3 +32,4 @@ go.work.sum
 # .vscode/
 *.mp3
 *.syso
+dev
