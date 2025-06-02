@@ -6,14 +6,11 @@ import (
 	"os/signal"
 	"syscall"
 
-	"cafetime/actions"
-
 	"fyne.io/systray"
 )
 
 var (
-	actionFunc  = actions.LockScreenWindows
-	timerFlag   = false
+	actionFunc  func()
 	stopTimerCh = make(chan struct{}, 1)
 	//go:embed asset/cafeon.ico
 	IconOn []byte

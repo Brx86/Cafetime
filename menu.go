@@ -1,6 +1,8 @@
 package main
 
 import (
+	"cafetime/actions"
+
 	"fyne.io/systray"
 )
 
@@ -40,9 +42,15 @@ func OnClickMenu(m *Menu) {
 		case <-m.ActionLck.ClickedCh: // 超时锁屏
 			UncheckAllExcept(m.ActionLck, m.ActionRun, m.ActionWeb)
 		case <-m.ActionRun.ClickedCh: // 超时打开文件或程序
-			UncheckAllExcept(m.ActionRun, m.ActionLck, m.ActionWeb)
+			if filePath := actions.SelectFileWindows(); filePath != "" {
+				actionFunc = actions.OpenFileWindows(filePath)
+				UncheckAllExcept(m.ActionRun, m.ActionLck, m.ActionWeb)
+			}
 		case <-m.ActionWeb.ClickedCh: // 超时打开网页
-			UncheckAllExcept(m.ActionWeb, m.ActionLck, m.ActionRun)
+			if link := actions.SelectLnkWindows(); link != "" {
+				actionFunc = actions.OpenFileWindows(link)
+				UncheckAllExcept(m.ActionWeb, m.ActionLck, m.ActionRun)
+			}
 		case <-m.TimerS.ClickedCh: // 点击启动/取消定时器
 			SetTimerStatus(m, false)
 			stopTimerCh <- struct{}{}
