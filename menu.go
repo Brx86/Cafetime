@@ -60,7 +60,7 @@ func OnClickMenu(m *Menu) {
 		case <-m.Timer30.ClickedCh:
 			go NewTimer(m, 30*secPm)
 		case <-m.Timer10.ClickedCh:
-			go NewTimer(m, 10)
+			go NewTimer(m, 10*secPm)
 		case <-m.StartUp.ClickedCh: // 设置开机自启
 			if m.StartUp.Checked() {
 				m.StartUp.Uncheck()
