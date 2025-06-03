@@ -21,6 +21,7 @@ var (
 )
 
 func main() {
+	actions.EnableDPIAwareness()
 	systray.Run(onReady, onExit)
 }
 
